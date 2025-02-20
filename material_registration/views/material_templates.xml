@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="materials_list" name="Material List">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2>Material List</h2>
+                <a href="/materials/create" class="btn btn-primary mb-2">Create Material</a>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Supplier</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="materials" t-as="material">
+                            <tr>
+                                <td><t t-esc="material.material_code"/></td>
+                                <td><t t-esc="material.material_name"/></td>
+                                <td><t t-esc="material.material_type"/></td>
+                                <td><t t-esc="material.material_buy_price"/></td>
+                                <td><t t-esc="material.supplier_id.name"/></td>
+                                <td>
+                                    <!-- ✅ Perbaikan pada href menggunakan t-attf-href -->
+                                    <a t-attf-href="/materials/{{ material.id }}/update"
+                                       class="btn btn-warning btn-sm">Edit</a>
+
+                                    <!-- ✅ Perbaikan pada action menggunakan t-attf-action -->
+                                    <form t-attf-action="/materials/{{ material.id }}/delete" method="post" style="display:inline;">
+                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+        </template>
+
+    <template id="material_form" name="Material Form">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2><t t-if="material">Update Material</t><t t-else="">Create Material</t></h2>
+                <t t-if="error">
+                    <div class="alert alert-danger"><t t-esc="error"/></div>
+                </t>
+                <form action="" method="post">
+                    <div class="form-group">
+                        <label>Material Code:</label>
+                        <input type="text" name="material_code" class="form-control"
+                               t-att-value="material.material_code if material else ''" required="required"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Material Name:</label>
+                        <input type="text" name="material_name" class="form-control"
+                               t-att-value="material.material_name if material else ''" required="required"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Material Type:</label>
+                        <select name="material_type" class="form-control" required="required">
+                            <option value="fabric"
+                                    t-att-selected="material and material.material_type == 'fabric'">Fabric</option>
+                            <option value="jeans"
+                                    t-att-selected="material and material.material_type == 'jeans'">Jeans</option>
+                            <option value="cotton"
+                                    t-att-selected="material and material.material_type == 'cotton'">Cotton</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Material Buy Price:</label>
+                        <input type="number" name="material_buy_price" class="form-control" min="100"
+                               t-att-value="material.material_buy_price if material else ''" required="required"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Supplier:</label>
+                        <select name="supplier_id" class="form-control" required="required">
+                            <t t-foreach="suppliers" t-as="supplier">
+                                <option t-att-value="supplier.id"
+                                        t-att-selected="material and supplier.id == material.supplier_id.id">
+                                    <t t-esc="supplier.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <a href="/materials" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+</odoo>

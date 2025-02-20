@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_material_tree" model="ir.ui.view">
+        <field name="name">material.registration.tree</field>
+        <field name="model">material.registration</field>
+        <field name="arch" type="xml">
+            <tree string="Material Registration">
+                <field name="material_code"/>
+                <field name="material_name"/>
+                <field name="material_type"/>
+                <field name="material_buy_price"/>
+                <field name="supplier_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_material_form" model="ir.ui.view">
+        <field name="name">material.registration.form</field>
+        <field name="model">material.registration</field>
+        <field name="arch" type="xml">
+            <form string="Material Registration">
+                <sheet>
+                    <group>
+                        <field name="material_code"/>
+                        <field name="material_name"/>
+                        <field name="material_type"/>
+                        <field name="material_buy_price"/>
+                        <field name="supplier_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_material_search" model="ir.ui.view">
+        <field name="name">material.registration.search</field>
+        <field name="model">material.registration</field>
+        <field name="arch" type="xml">
+            <search string="Search Material">
+                <filter string="Fabric" name="fabric_material_type" domain="[('material_type','=','fabric')]"/>
+                <filter string="Jeans" name="jeans_material_type" domain="[('material_type','=','jeans')]"/>
+                <filter string="Cotton" name="cotton_material_type" domain="[('material_type','=','cotton')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_material_registration" model="ir.actions.act_window">
+        <field name="name">Material Registration</field>
+        <field name="res_model">material.registration</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>
